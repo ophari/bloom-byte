@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom Byte — Konverter Binary, ASCII & Text</title>
+  <meta name="description" content="Konversi Binary ke Text, ASCII ke Text, dan sebaliknya secara instan. Tampilan glass yang bersih dan sederhana, dibuat dengan Python Flask.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-veil" aria-hidden="true"></div>
+
+  <header class="topbar glass">
+    <a href="/" class="brand" id="brand-link">
+      <span class="brand-mark">01</span>
+      <span class="brand-name">Bloom<b>Byte</b></span>
+    </a>
+    <span class="topbar-tag">Binary · ASCII · Text</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Ubah <span class="hl">Binary</span> &amp; <span class="hl">ASCII</span> jadi teks, dalam sekejap.</h1>
+      <p>Ketik atau tempel, hasilnya muncul otomatis. Semua kombinasi konversi didukung.</p>
+    </section>
+
+    <!-- Pemilih mode -->
+    <section class="mode glass" aria-label="Pilih mode konversi">
+      <div class="mode-group">
+        <span class="mode-label">Dari</span>
+        <div class="segmented" id="source-group" role="radiogroup">
+          <button type="button" id="src-text" data-value="text" role="radio">Text</button>
+          <button type="button" id="src-binary" data-value="binary" role="radio" class="active">Binary</button>
+          <button type="button" id="src-ascii" data-value="ascii" role="radio">ASCII</button>
+        </div>
+      </div>
+
+      <button type="button" class="swap" id="swap-btn" title="Tukar arah konversi" aria-label="Tukar arah konversi">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/></svg>
+      </button>
+
+      <div class="mode-group">
+        <span class="mode-label">Ke</span>
+        <div class="segmented" id="target-group" role="radiogroup">
+          <button type="button" id="tgt-text" data-value="text" role="radio" class="active">Text</button>
+          <button type="button" id="tgt-binary" data-value="binary" role="radio">Binary</button>
+          <button type="button" id="tgt-ascii" data-value="ascii" role="radio">ASCII</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editor input / output -->
+    <section class="editor-grid">
+      <article class="panel glass">
+        <div class="panel-head">
+          <h2><span class="dot dot-in"></span>Input <small id="input-label">Binary</small></h2>
+          <div class="actions">
+            <button type="button" class="icon-btn" id="sample-btn" title="Contoh">Contoh</button>
+            <button type="button" class="icon-btn" id="paste-btn" title="Tempel">Tempel</button>
+            <button type="button" class="icon-btn" id="clear-btn" title="Hapus">Hapus</button>
+          </div>
+        </div>
+        <textarea id="input" spellcheck="false" placeholder="01001000 01100001 01101100 01101111"></textarea>
+        <div class="panel-foot">
+          <span class="hint" id="input-hint">Pisahkan tiap 8 bit dengan spasi, atau tulis menyambung.</span>
+        </div>
+      </article>
+
+      <article class="panel glass">
+        <div class="panel-head">
+          <h2><span class="dot dot-out"></span>Output <small id="output-label">Text</small></h2>
+          <div class="actions">
+            <button type="button" class="icon-btn primary" id="copy-btn" title="Salin">Salin</button>
+            <button type="button" class="icon-btn" id="download-btn" title="Unduh .txt">Unduh</button>
+          </div>
+        </div>
+        <textarea id="output" readonly spellcheck="false" placeholder="Hasil konversi muncul di sini…"></textarea>
+        <div class="panel-foot">
+          <div class="sep-picker" id="sep-picker" aria-label="Pemisah output">
+            <span>Pemisah</span>
+            <button type="button" id="sep-space" data-value="space" class="active">Spasi</button>
+            <button type="button" id="sep-none" data-value="none">Tanpa</button>
+            <button type="button" id="sep-comma" data-value="comma">Koma</button>
+            <button type="button" id="sep-newline" data-value="newline">Baris</button>
+          </div>
+        </div>
+        <div class="error" id="error" role="alert" hidden></div>
+      </article>
+    </section>
+
+    <!-- Statistik -->
+    <section class="stats-grid" aria-label="Statistik">
+      <div class="stat glass"><span class="stat-value" id="stat-chars">0</span><span class="stat-label">Karakter</span></div>
+      <div class="stat glass"><span class="stat-value" id="stat-bytes">0</span><span class="stat-label">Byte</span></div>
+      <div class="stat glass"><span class="stat-value" id="stat-bits">0</span><span class="stat-label">Bit</span></div>
+      <div class="stat glass"><span class="stat-value" id="stat-words">0</span><span class="stat-label">Kata</span></div>
+    </section>
+
+    <!-- Rincian per karakter -->
+    <section class="breakdown glass">
+      <div class="breakdown-head">
+        <h2>Rincian per karakter</h2>
+        <span class="legend"><i class="lg-dec"></i>DEC <i class="lg-hex"></i>HEX <i class="lg-bin"></i>BIN</span>
+      </div>
+      <div class="char-grid" id="char-grid">
+        <p class="empty">Belum ada karakter. Mulai ketik di kolom input ✨</p>
+      </div>
+      <p class="truncated" id="truncated" hidden>Menampilkan 120 karakter pertama.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Dibuat oleh yusuf ganteng
+  </footer>
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
