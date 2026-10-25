@@ -19,7 +19,7 @@
 Berikut adalah struktur direktori lengkap dari proyek ini beserta penjelasan fungsinya:
 
 ```text
-KOMPILASI_ ASCII & BINNER TO TEXT/
+bloom-byte/
 │
 ├── static/                              # Aset statis untuk antarmuka web (frontend)
 │   ├── css/
@@ -127,27 +127,22 @@ Untuk mematikan server, tekan `Ctrl + C` di terminal.
 GitHub Pages adalah layanan hosting situs web gratis langsung dari repository GitHub Anda. Aplikasi ini sudah dilengkapi logika JavaScript mandiri (*client-side*), sehingga **dapat berjalan 100% di GitHub Pages tanpa perlu server Python tambahan**!
 
 #### Langkah 1: Push Kode ke GitHub
-1. Buka [GitHub](https://github.com) lalu buat repository baru (misalnya diberi nama `bloom-byte` atau `konverter-biner`).
-2. Buka terminal di folder proyek ini dan jalankan:
-   ```bash
-   git add .
-   git commit -m "Update: Siap hosting di GitHub Pages"
-   git branch -M main
-   git remote add origin https://github.com/<username-kamu>/<nama-repo>.git
-   git push -u origin main
-   ```
-   *(Ganti `<username-kamu>` dan `<nama-repo>` sesuai akun GitHub Anda)*
+Repository GitHub sudah terhubung ke **bloom-byte**:
+```bash
+git push -u origin main
+```
+URL Repository: `https://github.com/ophari/bloom-byte`
 
 #### Langkah 2: Aktifkan Fitur GitHub Pages
-1. Di halaman repository GitHub Anda, klik tab **Settings** (di menu atas).
+1. Di halaman repository GitHub Anda: [github.com/ophari/bloom-byte](https://github.com/ophari/bloom-byte), klik tab **Settings** (di menu atas).
 2. Di sidebar sebelah kiri, klik menu **Pages** (di bagian *Code and automation*).
 3. Pada bagian **Build and deployment**:
    - **Source:** Pilih `Deploy from a branch`.
    - **Branch:** Pilih `main` dan folder `/ (root)`.
 4. Klik tombol **Save**.
-5. Tunggu sekitar 1–2 menit, refresh halaman. GitHub akan memberikan link website Anda yang sudah aktif:
+5. Tunggu sekitar 1–2 menit, refresh halaman. Link website Anda akan aktif di:
    ```
-   https://<username-kamu>.github.io/<nama-repo>/
+   https://ophari.github.io/bloom-byte/
    ```
 *(Website Anda kini online 24 jam gratis tanpa batasan sleep/inaktivitas!)*
 
