@@ -11,199 +11,104 @@
 - **Tukar Cepat (Swap):** Membalik format sumber dan tujuan dalam satu klik.
 - **Salin Instan (Copy to Clipboard):** Salin hasil konversi langsung ke clipboard dengan indikator status.
 - **Desain Modern:** Menggunakan gaya *Glassmorphism* gelap dengan efek blur, transisi halus, dan tata letak responsif di semua perangkat.
+- **100% JavaScript, Tanpa Server:** Semua konversi berjalan langsung di browser — bisa di-hosting gratis di GitHub Pages.
 
 ---
 
 ## 📁 Struktur File & Folder
 
-Berikut adalah struktur direktori lengkap dari proyek ini beserta penjelasan fungsinya:
-
 ```text
 bloom-byte/
 │
-├── static/                              # Aset statis untuk antarmuka web (frontend)
+├── static/
 │   ├── css/
-│   │   └── style.css                    # Lembar gaya CSS (Glassmorphism, tata letak, tema gelap)
+│   │   └── style.css                    # Styling (Glassmorphism, layout, animasi)
 │   ├── img/
-│   │   └── bg_upscayl_5x_upscayl-standard-4x.png  # Gambar latar belakang (background) HD
+│   │   └── bg_upscayl_5x_upscayl-standard-4x.png  # Gambar latar belakang HD
 │   └── js/
-│       └── app.js                       # Skrip JavaScript klien (konversi instan, swap & copy)
+│       ├── converter.js                 # Logika konversi (Text ⇄ Binary ⇄ ASCII) — "backend"-nya
+│       └── app.js                       # Logika UI (event, render statistik & rincian, copy/swap)
 │
-├── templates/
-│   └── index.html                       # Berkas template antarmuka utama (Flask / Jinja2)
-│
-├── .gitignore                           # Daftar berkas/folder yang diabaikan oleh Git
-├── app.py                               # Server utama Flask & endpoint API backend
-├── converter.py                         # Modul logika konversi (Binary, ASCII, Text, decoding & breakdown)
-├── index.html                           # Halaman utama web statis (khusus hosting langsung di GitHub Pages)
-├── Procfile                             # Perintah startup server untuk platform cloud (Gunicorn)
-├── README.md                            # Dokumentasi lengkap proyek dan panduan penggunaan
-└── requirements.txt                     # Daftar pustaka/dependensi Python yang dibutuhkan
+├── .gitignore                           # Daftar berkas yang diabaikan Git
+├── .nojekyll                            # Mematikan Jekyll di GitHub Pages (deploy lebih cepat)
+├── index.html                           # Halaman utama
+└── README.md                            # Dokumentasi proyek
 ```
 
 ---
 
-## 🚀 Panduan Menjalankan Aplikasi (Lokal)
+## 🚀 Menjalankan Secara Lokal
 
-### 1. Prasyarat Sistem
-Pastikan perangkat Anda sudah terpasang:
-- **Python 3.8** atau versi yang lebih baru ([Unduh Python](https://www.python.org/downloads/))
-- **pip** (biasanya otomatis terpasang bersama Python)
-- **Git** (opsional, untuk mengelola repository)
+Tidak perlu install apa pun. Pilih salah satu:
+
+- **Cara paling cepat:** klik dua kali `index.html` → otomatis terbuka di browser.
+- **Pakai server lokal (opsional):**
+  ```bash
+  # Pakai VS Code: install ekstensi "Live Server" → klik kanan index.html → "Open with Live Server"
+  # atau pakai Node.js:
+  npx serve .
+  ```
 
 ---
 
-### 2. Langkah-Langkah Menjalankan
+## 🌐 Hosting di GitHub Pages
 
-#### Langkah A: Buka Direktori Proyek
-Buka terminal (Command Prompt, PowerShell, atau Terminal) lalu arahkan ke folder proyek:
-```bash
-cd "c:/project/KOMPILASI_ ASCII & BINNER TO TEXT"
-```
+Repository: [github.com/ophari/bloom-byte](https://github.com/ophari/bloom-byte)
 
-#### Langkah B: Buat & Aktifkan Virtual Environment *(Sangat Direkomendasikan)*
-Menggunakan virtual environment mencegah konflik versi library dengan sistem global.
-
-- **Pada Windows (PowerShell / Command Prompt):**
-  ```powershell
-  # 1. Buat virtual environment bernama 'venv'
-  python -m venv venv
-
-  # 2. Aktifkan virtual environment (PowerShell):
-  .\venv\Scripts\Activate.ps1
-
-  # Atau jika menggunakan Command Prompt (cmd):
-  venv\Scripts\activate.bat
-  ```
-
-- **Pada macOS / Linux:**
-  ```bash
-  # 1. Buat virtual environment
-  python3 -m venv venv
-
-  # 2. Aktifkan virtual environment:
-  source venv/bin/activate
-  ```
-
-*(Setelah aktif, nama `(venv)` akan muncul di awal baris perintah terminal).*
-
-#### Langkah C: Pasang Dependensi
-Install library yang tertera pada `requirements.txt`:
-```bash
-pip install -r requirements.txt
-```
-
-#### Langkah D: Jalankan Server Flask
-Jalankan aplikasi dengan perintah:
-```bash
-python app.py
-```
-
-*Tips (Mode Debug & Auto-reload saat coding):*
-- **Windows (PowerShell):**
-  ```powershell
-  $env:FLASK_DEBUG="1"; python app.py
-  ```
-- **Windows (CMD):**
-  ```cmd
-  set FLASK_DEBUG=1 && python app.py
-  ```
-- **macOS / Linux:**
-  ```bash
-  FLASK_DEBUG=1 python3 app.py
-  ```
-
-#### Langkah E: Buka di Browser
-Buka browser favorit Anda dan akses alamat berikut:
-```
-http://127.0.0.1:5000
-```
-*(atau `http://localhost:5000`)*
-
-Untuk mematikan server, tekan `Ctrl + C` di terminal.
-
-### OPSI 1: Hosting Langsung di GitHub Pages (Paling Mudah, Cepat & 100% Gratis)
-
-GitHub Pages adalah layanan hosting situs web gratis langsung dari repository GitHub Anda. Aplikasi ini sudah dilengkapi logika JavaScript mandiri (*client-side*), sehingga **dapat berjalan 100% di GitHub Pages tanpa perlu server Python tambahan**!
-
-#### Langkah 1: Push Kode ke GitHub
-Repository GitHub sudah terhubung ke **bloom-byte**:
-```bash
-git push -u origin main
-```
-URL Repository: `https://github.com/ophari/bloom-byte`
-
-#### Langkah 2: Aktifkan Fitur GitHub Pages
-1. Di halaman repository GitHub Anda: [github.com/ophari/bloom-byte](https://github.com/ophari/bloom-byte), klik tab **Settings** (di menu atas).
-2. Di sidebar sebelah kiri, klik menu **Pages** (di bagian *Code and automation*).
-3. Pada bagian **Build and deployment**:
-   - **Source:** Pilih `Deploy from a branch`.
-   - **Branch:** Pilih `main` dan folder `/ (root)`.
-4. Klik tombol **Save**.
-5. Tunggu sekitar 1–2 menit, refresh halaman. Link website Anda akan aktif di:
+1. Push perubahan ke GitHub:
+   ```bash
+   git add .
+   git commit -m "update"
+   git push
+   ```
+2. Buka **Settings → Pages** di repository.
+3. Di **Build and deployment**:
+   - **Source:** `Deploy from a branch`
+   - **Branch:** `main` / `/ (root)` → **Save**
+4. Tunggu 1–2 menit. Website aktif di:
    ```
    https://ophari.github.io/bloom-byte/
    ```
-*(Website Anda kini online 24 jam gratis tanpa batasan sleep/inaktivitas!)*
+
+Setiap kali kamu `git push`, website akan ter-update otomatis.
 
 ---
 
+## 🔌 Memakai Konverter dari JavaScript
 
-## 🔌 Dokumentasi REST API
+`static/js/converter.js` mengekspos objek global `BloomConverter` yang bisa dipakai di halaman lain:
 
-Aplikasi ini menyediakan endpoint API publik yang dapat digunakan secara independen oleh aplikasi pihak ketiga.
-
-### Endpoint: Konversi Data
-- **URL:** `/api/convert`
-- **Method:** `POST`
-- **Headers:** `Content-Type: application/json`
-
-#### Request Body
-```json
-{
-  "input": "01001000 01100001 01101100 01101111",
-  "source": "binary",
-  "target": "text",
-  "separator": "space"
-}
+```html
+<script src="static/js/converter.js"></script>
+<script>
+  const hasil = BloomConverter.convert("01001000 01101001", "binary", "text", "space");
+  console.log(hasil.output); // "Hi"
+</script>
 ```
 
-| Parameter | Tipe | Pilihan Nilai | Keterangan |
-| :--- | :--- | :--- | :--- |
-| `input` | String | Bebas (Maks 20.000 karakter) | Teks / kode yang ingin dikonversi |
-| `source` | String | `text`, `binary`, `ascii` | Format data input |
-| `target` | String | `text`, `binary`, `ascii` | Format hasil yang diinginkan |
-| `separator` | String | `space`, `none`, `comma`, `newline` | Pemisah antar unit output |
+| Parameter | Pilihan Nilai | Keterangan |
+| :--- | :--- | :--- |
+| `input` | String (maks 20.000 karakter) | Teks / kode yang ingin dikonversi |
+| `source` | `text`, `binary`, `ascii` | Format data input |
+| `target` | `text`, `binary`, `ascii` | Format hasil yang diinginkan |
+| `separator` | `space`, `none`, `comma`, `newline` | Pemisah antar unit output |
 
-#### Response Berhasil (`200 OK`)
-```json
+**Nilai kembalian:**
+```js
 {
-  "ok": true,
-  "output": "Halo",
-  "text": "Halo",
-  "stats": {
-    "chars": 4,
-    "bytes": 4,
-    "bits": 32,
-    "words": 1
-  },
-  "breakdown": [
-    { "char": "H", "dec": 72, "hex": "48", "bin": "01001000" },
-    { "char": "a", "dec": 97, "hex": "61", "bin": "01100001" },
-    { "char": "l", "dec": 108, "hex": "6C", "bin": "01101100" },
-    { "char": "o", "dec": 111, "hex": "6F", "bin": "01101111" }
+  output: "Hi",
+  text: "Hi",
+  stats: { chars: 2, bytes: 2, bits: 16, words: 1 },
+  breakdown: [
+    { char: "H", dec: 72,  hex: "48", bin: "01001000" },
+    { char: "i", dec: 105, hex: "69", bin: "01101001" }
   ],
-  "truncated": false
+  truncated: false
 }
 ```
 
-#### Response Error (`400 Bad Request`)
-```json
-{
-  "ok": false,
-  "error": "Karakter '2' tidak valid. Binary hanya boleh berisi 0 dan 1."
-}
-```
+Jika input tidak valid, fungsi akan melempar `BloomConverter.ConversionError` dengan pesan yang ramah, misalnya:
+`Karakter '2' tidak valid. Binary hanya boleh berisi 0 dan 1.`
 
 ---
 

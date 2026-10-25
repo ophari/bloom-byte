@@ -18,7 +18,8 @@
     ascii: "72 97 108 111",
   };
 
-  const SEPARATORS = { space: " ", none: "", comma: ", ", newline: "\n" };
+  // Logika konversi ada di static/js/converter.js (jalan 100% di browser)
+  const { convert } = window.BloomConverter;
 
   const state = { source: "binary", target: "text", separator: "space" };
 
@@ -117,130 +118,10 @@
     errorBox.hidden = !msg;
   }
 
-  // ---------- Logika Konversi Client-Side (Kompatibel GitHub Pages & Offline) ----------
-  function binaryToText(data) {
-    const cleaned = data.trim();
-    if (!cleaned) return "";
-
-    const invalid = cleaned.match(/[^01\s,]/);
-    if (invalid) {
-      throw new Error(`Karakter '${invalid[0]}' tidak valid. Binary hanya boleh berisi 0 dan 1.`);
-    }
-
-    let tokens = cleaned.split(/[\s,]+/).filter(Boolean);
-    if (tokens.length === 1 && tokens[0].length > 8) {
-      const bits = tokens[0];
-      if (bits.length % 8 !== 0) {
-        throw new Error(`Panjang binary (${bits.length} bit) bukan kelipatan 8. Periksa lagi input kamu.`);
-      }
-      tokens = [];
-      for (let i = 0; i < bits.length; i += 8) {
-        tokens.push(bits.slice(i, i + 8));
-      }
-    }
-
-    for (const t of tokens) {
-      if (t.length > 8) {
-        throw new Error(`Grup '${t}' lebih dari 8 bit.`);
-      }
-    }
-
-    const bytes = new Uint8Array(tokens.map((t) => parseInt(t, 2)));
-    try {
-      const decoder = new TextDecoder("utf-8", { fatal: true });
-      return decoder.decode(bytes);
-    } catch {
-      return Array.from(bytes, (b) => String.fromCharCode(b)).join("");
-    }
-  }
-
-  function asciiToText(data) {
-    const cleaned = data.trim();
-    if (!cleaned) return "";
-
-    const tokens = cleaned.split(/[\s,;]+/).filter(Boolean);
-    const chars = [];
-    for (const t of tokens) {
-      if (!/^\d+$/.test(t)) {
-        throw new Error(`'${t}' bukan kode ASCII. Gunakan angka desimal, contoh: 72 101 108 108 111`);
-      }
-      const code = parseInt(t, 10);
-      if (code > 0x10FFFF) {
-        throw new Error(`Kode ${code} di luar jangkauan karakter.`);
-      }
-      chars.push(String.fromCodePoint(code));
-    }
-    return chars.join("");
-  }
-
-  function textToBinary(text, sep = " ") {
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(text);
-    return Array.from(bytes, (b) => b.toString(2).padStart(8, "0")).join(sep);
-  }
-
-  function textToAscii(text, sep = " ") {
-    return Array.from(text).map((c) => c.codePointAt(0)).join(sep);
-  }
-
-  const PARSERS = {
-    text: (s) => s,
-    binary: binaryToText,
-    ascii: asciiToText,
-  };
-
-  const ENCODERS = {
-    text: (s, sep) => s,
-    binary: textToBinary,
-    ascii: textToAscii,
-  };
-
-  function describeChar(c) {
-    const code = c.codePointAt(0);
-    const names = { " ": "SPACE", "\n": "LF", "\t": "TAB", "\r": "CR" };
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(c);
-    const binStr = Array.from(bytes, (b) => b.toString(2).padStart(8, "0")).join(" ");
-    return {
-      char: names[c] || c,
-      dec: code,
-      hex: code.toString(16).toUpperCase().padStart(2, "0"),
-      bin: binStr,
-    };
-  }
-
-  function convertLocal(data, source, target, sepKey) {
-    const sep = SEPARATORS[sepKey] !== undefined ? SEPARATORS[sepKey] : " ";
-    const parse = PARSERS[source];
-    const encode = ENCODERS[target];
-    if (!parse || !encode) throw new Error("Format tidak dikenal.");
-
-    const text = parse(data || "");
-    const outputText = encode(text, sep);
-
-    const encoder = new TextEncoder();
-    const utf8Bytes = encoder.encode(text);
-    const charsArray = Array.from(text);
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-
-    return {
-      output: outputText,
-      text: text,
-      breakdown: charsArray.slice(0, 120).map(describeChar),
-      truncated: charsArray.length > 120,
-      stats: {
-        chars: charsArray.length,
-        bytes: utf8Bytes.length,
-        bits: utf8Bytes.length * 8,
-        words: words,
-      },
-    };
-  }
-
-  // ---------- Eksekusi Konversi (Instant Client-Side dengan fallback API) ----------
+  // ---------- Konversi ----------
   function runConvert() {
     try {
-      const data = convertLocal(input.value, state.source, state.target, state.separator);
+      const data = convert(input.value, state.source, state.target, state.separator);
       showError("");
       output.value = data.output;
       renderStats(data.stats);
@@ -248,8 +129,6 @@
     } catch (err) {
       showError(err.message || "Gagal melakukan konversi.");
       output.value = "";
-      renderStats({ chars: 0, bytes: 0, bits: 0, words: 0 });
-      renderGrid([], false);
     }
   }
 
