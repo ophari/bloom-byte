@@ -1,11 +1,3 @@
-# Bloom Byte — Konverter Binary · ASCII · Text
-
-Aplikasi web konversi instan **Binary · ASCII · Text** berbasis **Python (Flask)** dengan antarmuka modern bernuansa *Glassmorphism* dan latar belakang HD.
-
-Dibuat oleh Yusuf.
-
----
-
 ## ✨ Fitur Utama
 
 - **Konversi Multi-Arah:** Mendukung konversi bolak-balik antara:
@@ -130,14 +122,6 @@ http://127.0.0.1:5000
 
 Untuk mematikan server, tekan `Ctrl + C` di terminal.
 
----
-
-## 🌐 Cara Hosting / Deploy ke Publik (Online Gratis)
-
-Aplikasi ini sudah dirancang **Universal** — bisa di-hosting langsung di **GitHub Pages** (tanpa server backend) maupun di platform **Cloud Python/Flask** (Render, Railway, PythonAnywhere).
-
----
-
 ### OPSI 1: Hosting Langsung di GitHub Pages (Paling Mudah, Cepat & 100% Gratis)
 
 GitHub Pages adalah layanan hosting situs web gratis langsung dari repository GitHub Anda. Aplikasi ini sudah dilengkapi logika JavaScript mandiri (*client-side*), sehingga **dapat berjalan 100% di GitHub Pages tanpa perlu server Python tambahan**!
@@ -169,31 +153,6 @@ GitHub Pages adalah layanan hosting situs web gratis langsung dari repository Gi
 
 ---
 
-### OPSI 2: Deploy Backend Python Flask (Render / Railway / PythonAnywhere)
-
-Jika Anda ingin menjalankan server backend Python Flask secara penuh dan mengaktifkan REST API `/api/convert`:
-
-#### A. Render (Rekomendasi Backend Gratis)
-1. Buka [render.com](https://render.com) dan login dengan akun GitHub.
-2. Klik **New +** > **Web Service**.
-3. Pilih repository GitHub proyek ini.
-4. Isi konfigurasi:
-   - **Environment:** `Python 3`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `gunicorn app:app`
-5. Klik **Create Web Service**. Web dan API akan aktif di domain HTTPS gratis (`https://nama-web.onrender.com`).
-
-#### B. Railway
-1. Kunjungi [railway.app](https://railway.app) dan login dengan GitHub.
-2. Pilih **New Project** > **Deploy from GitHub repo**.
-3. Pilih repository Anda. Railway akan otomatis mendeteksi berkas `Procfile` dan menjalankan aplikasi.
-
-#### C. PythonAnywhere
-1. Buka [pythonanywhere.com](https://www.pythonanywhere.com) dan daftar akun gratis.
-2. Buat Web App bertipe **Flask (Python 3.10+)**.
-3. Clone atau upload berkas proyek, lalu arahkan konfigurasi WSGI ke objek `app` di berkas `app.py`.
-
----
 
 ## 🔌 Dokumentasi REST API
 
