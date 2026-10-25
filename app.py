@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request
 
 from converter import ConversionError, convert
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".", static_folder="static")
 
 SEPARATORS = {"space": " ", "none": "", "comma": ", ", "newline": "\n"}
 

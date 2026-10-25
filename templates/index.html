@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bloom Byte — Konverter Binary, ASCII & Text</title>
-  <meta name="description" content="Konversi Binary ke Text, ASCII ke Text, dan sebaliknya secara instan. Tampilan glass yang bersih dan sederhana, dibuat dengan Python Flask.">
+  <meta name="description" content="Konversi Binary ke Text, ASCII ke Text, dan sebaliknya secara instan. Tampilan glass yang bersih dan sederhana.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
   <div class="bg" aria-hidden="true"></div>
   <div class="bg-veil" aria-hidden="true"></div>
 
   <header class="topbar glass">
-    <a href="/" class="brand" id="brand-link">
+    <a href="#" class="brand" id="brand-link">
       <span class="brand-mark">01</span>
       <span class="brand-name">Bloom<b>Byte</b></span>
     </a>
@@ -114,11 +114,11 @@
   </main>
 
   <footer class="footer">
-    Dibuat oleh yusuf ganteng
+    Dibuat oleh Yusuf
   </footer>
 
   <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="static/js/app.js"></script>
 </body>
 </html>
